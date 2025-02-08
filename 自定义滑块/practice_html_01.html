@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义滑块</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        /* 滑动区域 */
+        .container {
+            width: 500px;
+            height: 50px;
+            position: relative;
+            background-color: greenyellow;
+            border-radius: 50px;
+            margin: auto;
+        }
+
+        .slider {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: red;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slider"></div>
+    </div>
+    <script>
+        // 获取滑动区域
+        const container = document.querySelector('.container');
+        // 获取滑块
+        const slider = document.querySelector('.slider');
+        // 获取容器左侧到浏览器左侧的距离
+        const containerLeft = container.offsetLeft;
+        // 获取滑块在容器内能滚动到的最左侧距离
+        const minLeft = 0;
+        // 获取滑块在容器内能滚动到的最右侧距离
+        const maxLeft = container.offsetWidth - slider.offsetWidth;
+        // 获取滑块的宽度
+        const sliderWidth = slider.offsetWidth;
+
+        
+        // 鼠标按下事件
+        slider.onmousedown = function(e) {
+            document.onmousemove = function(e) {
+                // 获取滑块左边到容器左边的距离
+                let sliderX = e.clientX - sliderWidth/2 - containerLeft;
+                
+                // 判断滑块是否超出最左侧或最右侧
+                sliderX = Math.min(Math.max(sliderX, minLeft), maxLeft);
+                slider.style.left = sliderX + 'px';
+            }
+            // 鼠标松开事件
+            document.onmouseup = function() {
+                this.onmousemove = null;
+            }
+            
+        }
+
+        // 点击获取鼠标位置
+        document.onclick = function(e) {
+            console.log(e.clientX);
+        }
+    </script>
+</body>
+</html>
